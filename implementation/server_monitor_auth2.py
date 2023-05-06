@@ -8,19 +8,22 @@ import io
 import json
 import base64
 import ipfshttpclient
+from web3.middleware import geth_poa_middleware
 
 api = ipfshttpclient.connect('/ip4/127.0.0.1/tcp/5001')
 
 authority2_address = config('AUTHORITY2_ADDRESS')
 authority2_private_key = config('AUTHORITY2_PRIVATEKEY')
 
-web3 = Web3(Web3.HTTPProvider("https://goerli.infura.io/v3/059e54a94bca48d893f1b2d45470c002"))
+# web3 = Web3(Web3.HTTPProvider("https://goerli.infura.io/v3/059e54a94bca48d893f1b2d45470c002"))
+web3 = Web3(Web3.HTTPProvider("https://polygon-mumbai.g.alchemy.com/v2/vPOruPqyAIJXHPil7CE703mfy8_F4h8m"))
 
 
 def send_ipfs_link(reader_address, process_instance_id, hash_file):
     nonce = web3.eth.getTransactionCount(authority2_address)
 
     tx = {
+        'chainId': 80001,  # Polygon testnet: Mumbai
         'nonce': nonce,
         'to': reader_address,
         'value': 0,
@@ -70,7 +73,8 @@ def cipher_generated_key(reader_address, process_instance_id, generated_ma_key):
 
 
 def transactions_monitoring():
-    min_round = 8515028
+    web3.middleware_onion.inject(geth_poa_middleware, layer=0)
+    min_round = 35260985
     transactions = []
     note = 'generate your part of my key'
     while True:

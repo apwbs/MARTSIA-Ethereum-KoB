@@ -1,7 +1,8 @@
 from decouple import config
 from web3 import Web3
 
-web3 = Web3(Web3.HTTPProvider("https://goerli.infura.io/v3/059e54a94bca48d893f1b2d45470c002"))
+# web3 = Web3(Web3.HTTPProvider("https://goerli.infura.io/v3/059e54a94bca48d893f1b2d45470c002"))
+web3 = Web3(Web3.HTTPProvider("https://polygon-mumbai.g.alchemy.com/v2/vPOruPqyAIJXHPil7CE703mfy8_F4h8m"))
 
 process_instance_id = config('PROCESS_INSTANCE_ID')
 
@@ -25,6 +26,7 @@ authority_address = authority4_address
 def send_key_request():
     nonce = web3.eth.getTransactionCount(address_requesting)
     tx = {
+        'chainId': 80001,  # Polygon testnet: Mumbai
         'nonce': nonce,
         'to': authority_address,
         'value': 0,
