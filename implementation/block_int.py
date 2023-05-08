@@ -33,7 +33,7 @@ def send_authority_names(authority_address, private_key, process_instance_id, ha
     transaction_hash = web3.eth.send_raw_transaction(signed_transaction.rawTransaction)
     print(f'tx_hash: {web3.toHex(transaction_hash)}')
     tx_receipt = web3.eth.wait_for_transaction_receipt(transaction_hash, timeout=600)
-    # print(tx_receipt)
+    print(tx_receipt)
 
 
 def retrieve_authority_names(authority_address, process_instance_id):
@@ -69,7 +69,7 @@ def sendHashedElements(authority_address, private_key, process_instance_id, elem
     transaction_hash = web3.eth.send_raw_transaction(signed_transaction.rawTransaction)
     print(f'tx_hash: {web3.toHex(transaction_hash)}')
     tx_receipt = web3.eth.wait_for_transaction_receipt(transaction_hash, timeout=600)
-    # print(tx_receipt)
+    print(tx_receipt)
 
 
 def retrieveHashedElements(eth_address, process_instance_id):
@@ -107,7 +107,7 @@ def sendElements(authority_address, private_key, process_instance_id, elements):
     transaction_hash = web3.eth.send_raw_transaction(signed_transaction.rawTransaction)
     print(f'tx_hash: {web3.toHex(transaction_hash)}')
     tx_receipt = web3.eth.wait_for_transaction_receipt(transaction_hash, timeout=600)
-    # print(tx_receipt)
+    print(tx_receipt)
 
 
 def retrieveElements(eth_address, process_instance_id):
@@ -145,7 +145,7 @@ def send_parameters_link(authority_address, private_key, process_instance_id, ha
     transaction_hash = web3.eth.send_raw_transaction(signed_transaction.rawTransaction)
     print(f'tx_hash: {web3.toHex(transaction_hash)}')
     tx_receipt = web3.eth.wait_for_transaction_receipt(transaction_hash, timeout=600)
-    # print(tx_receipt)
+    print(tx_receipt)
 
 
 def retrieve_parameters_link(authority_address, process_instance_id):
@@ -181,7 +181,7 @@ def send_publicKey_link(authority_address, private_key, process_instance_id, has
     transaction_hash = web3.eth.send_raw_transaction(signed_transaction.rawTransaction)
     print(f'tx_hash: {web3.toHex(transaction_hash)}')
     tx_receipt = web3.eth.wait_for_transaction_receipt(transaction_hash, timeout=600)
-    # print(tx_receipt)
+    print(tx_receipt)
 
 
 def retrieve_publicKey_link(eth_address, process_instance_id):
@@ -216,7 +216,7 @@ def send_MessageIPFSLink(dataOwner_address, private_key, message_id, hash_file):
     transaction_hash = web3.eth.send_raw_transaction(signed_transaction.rawTransaction)
     print(f'tx_hash: {web3.toHex(transaction_hash)}')
     tx_receipt = web3.eth.wait_for_transaction_receipt(transaction_hash, timeout=600)
-    # print(tx_receipt)
+    print(tx_receipt)
 
 
 def retrieve_MessageIPFSLink(message_id):

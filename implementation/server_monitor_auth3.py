@@ -37,7 +37,7 @@ def send_ipfs_link(reader_address, process_instance_id, hash_file):
     tx_hash = web3.eth.sendRawTransaction(signed_tx.rawTransaction)
     print(f'tx_hash: {web3.toHex(tx_hash)}')
     tx_receipt = web3.eth.wait_for_transaction_receipt(tx_hash, timeout=600)
-    # print(tx_receipt)
+    print(tx_receipt)
 
 
 def generate_key(x):
@@ -74,7 +74,7 @@ def cipher_generated_key(reader_address, process_instance_id, generated_ma_key):
 
 def transactions_monitoring():
     web3.middleware_onion.inject(geth_poa_middleware, layer=0)
-    min_round = 35261027
+    min_round = 35330903
     transactions = []
     note = 'generate your part of my key'
     while True:

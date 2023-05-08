@@ -40,7 +40,7 @@ def send_key_request():
     tx_hash = web3.eth.sendRawTransaction(signed_tx.rawTransaction)
     print(f'tx_hash: {web3.toHex(tx_hash)}')
     tx_receipt = web3.eth.wait_for_transaction_receipt(tx_hash, timeout=600)
-    # print(tx_receipt)
+    print(tx_receipt)
 
 
 if __name__ == "__main__":
