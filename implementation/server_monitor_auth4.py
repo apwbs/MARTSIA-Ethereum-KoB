@@ -74,17 +74,18 @@ def cipher_generated_key(reader_address, process_instance_id, generated_ma_key):
 
 def transactions_monitoring():
     web3.middleware_onion.inject(geth_poa_middleware, layer=0)
-    min_round = 35330947
+    min_round = 35414048
     transactions = []
     note = 'generate your part of my key'
     while True:
         block = web3.eth.getBlock(min_round, True)
         print(block.number)
         for transaction in block.transactions:
-            if transaction['to'] == authority4_address and transaction['hash'] not in transactions \
-                    and 'input' in transaction:
-                if bytes.fromhex(transaction['input'][2:]).decode('utf-8').split(',')[0] == note:
-                    transactions.append(transaction)
+            if 'to' in transaction:
+                if transaction['to'] == authority4_address and transaction['hash'] not in transactions \
+                        and 'input' in transaction:
+                    if bytes.fromhex(transaction['input'][2:]).decode('utf-8').split(',')[0] == note:
+                        transactions.append(transaction)
         min_round = min_round + 1
         for x in transactions:
             generate_key(x)
