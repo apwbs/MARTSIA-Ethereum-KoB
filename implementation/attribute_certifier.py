@@ -1,4 +1,5 @@
 import json
+import time
 from datetime import datetime
 import random
 import block_int
@@ -22,6 +23,7 @@ x = conn.cursor()
 
 
 def generate_attributes():
+    start = time.time()
     now = datetime.now()
     now = int(now.strftime("%Y%m%d%H%M%S%f"))
     random.seed(now)
@@ -40,6 +42,7 @@ def generate_attributes():
                             str(process_instance_id) + '@OT', str(process_instance_id) + '@TU', 'SUPPLIER@OU',
                             'MECHANICS@TU']
     }
+    attributes_certification_time = time.time()
 
     f = io.StringIO()
     dict_users_dumped = json.dumps(dict_users)
@@ -51,12 +54,21 @@ def generate_attributes():
 
     hash_file = api.add_json(file_to_str)
     print(f'ipfs hash: {hash_file}')
+    generate_hash_file_time = time.time()
 
     block_int.send_users_attributes(attribute_certifier_address, private_key, process_instance_id, hash_file)
+    blockchain_execution = time.time()
 
     x.execute("INSERT OR IGNORE INTO user_attributes VALUES (?,?,?)",
               (str(process_instance_id), hash_file, file_to_str))
     conn.commit()
+    local_saving = time.time()
+
+    print('The time for the attribute certification is :', (attributes_certification_time - start) * 10 ** 3, 'ms')
+    print('The time for hash file generation is :', (generate_hash_file_time - attributes_certification_time) * 10 ** 3,
+          'ms')
+    print('The time for blockchain execution is :', (blockchain_execution - generate_hash_file_time) * 10 ** 3, 'ms')
+    print('The time for local saving is :', (local_saving - blockchain_execution) * 10 ** 3, 'ms')
 
 
 if __name__ == "__main__":

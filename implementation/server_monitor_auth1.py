@@ -20,30 +20,31 @@ authority1_private_key = config('AUTHORITY1_PRIVATEKEY')
 # web3 = Web3(Web3.HTTPProvider("https://goerli.infura.io/v3/059e54a94bca48d893f1b2d45470c002"))
 
 # Mumbai
-# web3 = Web3(Web3.HTTPProvider("https://polygon-mumbai.g.alchemy.com/v2/vPOruPqyAIJXHPil7CE703mfy8_F4h8m"))
-# web3.middleware_onion.inject(geth_poa_middleware, layer=0)
+web3 = Web3(Web3.HTTPProvider("https://polygon-mumbai.g.alchemy.com/v2/vPOruPqyAIJXHPil7CE703mfy8_F4h8m"))
+web3.middleware_onion.inject(geth_poa_middleware, layer=0)
 
 # Avalanche
-web3 = Web3(Web3.HTTPProvider("https://avalanche-fuji.infura.io/v3/059e54a94bca48d893f1b2d45470c002"))
-web3.middleware_onion.inject(geth_poa_middleware, layer=0)
+# web3 = Web3(Web3.HTTPProvider("https://avalanche-fuji.infura.io/v3/059e54a94bca48d893f1b2d45470c002"))
+# web3.middleware_onion.inject(geth_poa_middleware, layer=0)
 
 # Sepolia
 # web3 = Web3(Web3.HTTPProvider("https://sepolia.infura.io/v3/059e54a94bca48d893f1b2d45470c002"))
 
 
 def send_ipfs_link(reader_address, process_instance_id, hash_file):
+    start = time.time()
     nonce = web3.eth.getTransactionCount(authority1_address)
 
     tx = {
-        # 'chainId': 80001,  # Polygon testnet: Mumbai
-        'chainId': 43113,  # Avalanche testnet: Fuji
+        'chainId': 80001,  # Polygon testnet: Mumbai
+        # 'chainId': 43113,  # Avalanche testnet: Fuji
         # 'chainId': 11155111,  # Ethereum testnet: Sepolia
         'nonce': nonce,
         'to': reader_address,
         'value': 0,
         'gas': 40000,
-        # 'gasPrice': web3.toWei(web3.eth.gasPrice, 'wei'),  # Polygon testnet: Mumbai, Ethereum testnet: Sepolia
-        'gasPrice': 25000000000,  # Avalanche testnet: Fuji
+        'gasPrice': web3.toWei(web3.eth.gasPrice, 'wei'),  # Polygon testnet: Mumbai, Ethereum testnet: Sepolia
+        # 'gasPrice': 25000000000,  # Avalanche testnet: Fuji
         'data': web3.toHex(hash_file.encode() + b',' + str(process_instance_id).encode())
     }
 
@@ -53,7 +54,8 @@ def send_ipfs_link(reader_address, process_instance_id, hash_file):
     print(f'tx_hash: {web3.toHex(tx_hash)}')
     tx_receipt = web3.eth.wait_for_transaction_receipt(tx_hash, timeout=600)
     print(tx_receipt)
-
+    end = time.time()
+    print('The time for blockchain execution is :', (end - start) * 10 ** 3, 'ms')
 
 def generate_key(x):
     gid = bytes.fromhex(x['input'][2:]).decode('utf-8').split(',')[1]
@@ -64,7 +66,10 @@ def generate_key(x):
 
 
 def cipher_generated_key(reader_address, process_instance_id, generated_ma_key):
+    start = time.time()
     public_key_ipfs_link = block_int.retrieve_publicKey_readers(reader_address)
+    retrieve_pub_ke_time = time.time()
+    print('The time to retrieve pub key is :', (retrieve_pub_ke_time - start) * 10 ** 3, 'ms')
     getfile = api.cat(public_key_ipfs_link)
     getfile = getfile.split(b'###')
     if getfile[0].split(b': ')[1].decode('utf-8') == reader_address:
@@ -73,9 +78,12 @@ def cipher_generated_key(reader_address, process_instance_id, generated_ma_key):
         info = [generated_ma_key[i:i + 117] for i in range(0, len(generated_ma_key), 117)]
 
         f = io.BytesIO()
+        start_rsa_encryption = time.time()
         for part in info:
             crypto = rsa.encrypt(part, publicKey_usable)
             f.write(crypto)
+        end_rsa_encryption = time.time()
+        print('The time for rsa encryption is :', (end_rsa_encryption - start_rsa_encryption) * 10 ** 3, 'ms')
         f.seek(0)
 
         file_to_str = f.read()
@@ -88,11 +96,14 @@ def cipher_generated_key(reader_address, process_instance_id, generated_ma_key):
 
 
 def transactions_monitoring():
-    min_round = 22069399
+    min_round = 36346561
     transactions = []
     note = 'generate your part of my key'
     while True:
+        start = time.time()
         block = web3.eth.getBlock(min_round, True)
+        get_block_time = time.time()
+        print('The time for retrieving a block is :', (get_block_time - start) * 10 ** 3, 'ms')
         print(block.number)
         for transaction in block.transactions:
             if 'to' in transaction:
@@ -104,6 +115,8 @@ def transactions_monitoring():
         for x in transactions:
             generate_key(x)
             transactions.remove(x)
+        end = time.time()
+        print('Time for an entire run is: ', (end - start) * 10 ** 3, 'ms')
         time.sleep(5)
 
 
