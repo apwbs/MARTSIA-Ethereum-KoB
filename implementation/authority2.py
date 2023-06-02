@@ -177,9 +177,9 @@ def generate_public_parameters(groupObj, maabe, api, process_instance_id):
     conn.commit()
     local_saving = time.time()
 
-    print('The time to retrieve auth1 elements by authority 2 is :', (retrieve_auth2_parameters_time - start) * 10 ** 3,
+    print('The time to retrieve auth2 elements by authority 2 is :', (retrieve_auth2_parameters_time - start) * 10 ** 3,
           'ms')
-    print('The time to retrieve auth2 elements by authority 2 is :',
+    print('The time to retrieve auth1 elements by authority 2 is :',
           (retrieve_auth1_parameters_time - retrieve_auth2_parameters_time) * 10 ** 3, 'ms')
     print('The time to retrieve auth3 elements by authority 2 is :',
           (retrieve_auth3_parameters_time - retrieve_auth1_parameters_time) * 10 ** 3, 'ms')

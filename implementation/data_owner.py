@@ -252,7 +252,7 @@ def main(groupObj, maabe, api, process_instance_id):
               (str(process_instance_id), str(message_id), hash_file, str(json_total)))
     conn.commit()
     local_saving = time.time()
-    print('The time for local saving by authority 3 is :', (local_saving - blockchain_execution) * 10 ** 3, 'ms')
+    print('The time for local saving is :', (local_saving - blockchain_execution) * 10 ** 3, 'ms')
     print('Total time for the run is :', (local_saving - start) * 10 ** 3, 'ms')
 
 

@@ -8,14 +8,14 @@ import base64
 # web3 = Web3(Web3.HTTPProvider("https://goerli.infura.io/v3/059e54a94bca48d893f1b2d45470c002"))
 
 # Mumbai
-web3 = Web3(Web3.HTTPProvider("https://polygon-mumbai.g.alchemy.com/v2/vPOruPqyAIJXHPil7CE703mfy8_F4h8m"))
+# web3 = Web3(Web3.HTTPProvider("https://polygon-mumbai.g.alchemy.com/v2/vPOruPqyAIJXHPil7CE703mfy8_F4h8m"))
 
 # Avalanche
 # web3 = Web3(Web3.HTTPProvider("https://avalanche-fuji.infura.io/v3/059e54a94bca48d893f1b2d45470c002"))
 # web3.middleware_onion.inject(geth_poa_middleware, layer=0)
 
 # Sepolia
-# web3 = Web3(Web3.HTTPProvider("https://sepolia.infura.io/v3/059e54a94bca48d893f1b2d45470c002"))
+web3 = Web3(Web3.HTTPProvider("https://sepolia.infura.io/v3/059e54a94bca48d893f1b2d45470c002"))
 
 compiled_contract_path = 'blockchain/build/contracts/MARTSIAEth2.json'
 deployed_contract_address = config('CONTRACT_ADDRESS_MARTSIA')
